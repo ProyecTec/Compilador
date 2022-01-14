@@ -1,0 +1,405 @@
+package Analizador;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
+public class Variables {
+	Map<String, String> produccion_eliminar = new HashMap<String, String>();
+	Map<String, String> produccion = new HashMap<String, String>();
+	String ENCABEZADO = "print	(	)	;	}	Fin	id	,	String	char	int	float	=	input	palabra	caracter	+	-	*	/	num	==	<	<=	>	>=	!=	switch	{	case	:	break	default	do	while	numf	carácter	$	PR	DC	DCP	Declaracion	A	Tipo	Asigna	E	Oper	T	F	cmp	C	Selec	S	D	N	Repe	W	V";
+	String TABLA = " 	 	 	 	 	 	 	 	I3	I4	I5	I6	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	1	 	2	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I11	 	 	 	 	I12	I13	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I14	 	 	 	 	 	I15	I17	 	 	 	 	 	7	 	 	 	8	 	 	 	 	 	 	9	 	 	 	10	16	 \r\n"
+			+ " 	 	 	 	 	 	I18	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P15	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P16	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P17	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P18	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	acc	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I11	 	 	 	 	I12	I13	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I14	 	 	 	 	 	I15	I17	 	 	 	 	 	19	 	 	 	8	 	 	 	 	 	 	9	 	 	 	10	16	 \r\n"
+			+ "I11	 	 	 	 	I12	I13	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I14	 	 	 	 	 	I15	I17	 	 	 	 	 	20	 	 	 	8	 	 	 	 	 	 	9	 	 	 	10	16	 \r\n"
+			+ "I11	 	 	 	 	I12	I13	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I14	 	 	 	 	 	I15	I17	 	 	 	 	 	21	 	 	 	8	 	 	 	 	 	 	9	 	 	 	10	16	 \r\n"
+			+ " 	I22	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P10	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	I23	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I24	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I25	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I26	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I27	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I30	 	 	 	I29	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	28	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P6	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P7	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P8	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I32	 	 	 	 	 	 	 	I35	I36	 	 	 	 	I33	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I34	I36	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	31\r\n"
+			+ " 	I44	 	 	 	 	I45	 	 	 	 	 	 	I39	I40	I41	 	 	 	 	I46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	37	38	42	43	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I47	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I52	 	 	 	I53	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	48	 	 	 	 	49	 	 	 	 	 	 	50	 	 	 	51	57	 \r\n"
+			+ "I62	 	 	 	I63	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	58	 	 	 	 	59	 	 	 	 	 	 	60	 	 	 	61	57	 \r\n"
+			+ " 	I65	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	64	 	 	 	 	 	 	 	 \r\n"
+			+ "P11	 	 	 	 	P11	P11	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P11	 	 	 	 	 	P11	P11	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I66	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "P14	 	 	 	 	P14	P14	 	I3	I4	I5	I6	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P14	 	 	 	 	 	P14	P14	 	 	 	 	 	 	67	 	2	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I68	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P49	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P50	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P51	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P52	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P53	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I69	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P20	 	 	 	 	 	 	 	 	 	 	 	 	I70	I71	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I72	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P22	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P23	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P26	 	 	 	 	 	 	 	 	 	 	 	 	P26	P26	I73	I74	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P29	 	 	 	 	 	 	 	 	 	 	 	 	P29	P29	P29	P29	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I78	 	 	 	 	I79	 	 	 	 	 	 	 	 	 	 	 	 	 	I80	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	75	76	77	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P31	 	 	 	 	 	 	 	 	 	 	 	 	P31	P31	P31	P31	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P32	 	 	 	 	 	 	 	 	 	 	 	 	P32	P32	P32	P32	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I81	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I83	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	82	 \r\n"
+			+ "I52	 	 	 	I53	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	84	 	 	 	 	49	 	 	 	 	 	 	50	 	 	 	51	57	 \r\n"
+			+ "I52	 	 	 	I53	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	85	 	 	 	 	49	 	 	 	 	 	 	50	 	 	 	51	57	 \r\n"
+			+ "I52	 	 	 	I53	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	86	 	 	 	 	49	 	 	 	 	 	 	50	 	 	 	51	57	 \r\n"
+			+ " 	I87	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P5	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	I88	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I89	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I90	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I91	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I92	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I62	 	 	 	I63	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	93	 	 	 	 	59	 	 	 	 	 	 	60	 	 	 	61	57	 \r\n"
+			+ "I62	 	 	 	I63	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	94	 	 	 	 	59	 	 	 	 	 	 	60	 	 	 	61	57	 \r\n"
+			+ "I62	 	 	 	I63	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	95	 	 	 	 	59	 	 	 	 	 	 	60	 	 	 	61	57	 \r\n"
+			+ " 	I96	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P5	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I97	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I98	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I30	 	 	 	I29	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	99	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "P13	 	 	 	 	P13	P13	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P13	 	 	 	 	 	P13	P13	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I100	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "P19	 	 	 	 	P19	P19	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P19	 	 	 	 	 	P19	P19	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I44	 	 	 	 	I45	 	 	 	 	 	 	 	 	 	 	 	 	 	I46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	101	43	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I44	 	 	 	 	I45	 	 	 	 	 	 	 	 	 	 	 	 	 	I46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	102	43	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I32	 	 	 	 	 	 	 	I35	I36	 	 	 	 	I33	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I34	I36	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	103\r\n"
+			+ " 	I44	 	 	 	 	I45	 	 	 	 	 	 	 	 	 	 	 	 	 	I46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	104	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I44	 	 	 	 	I45	 	 	 	 	 	 	 	 	 	 	 	 	 	I46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	105	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I106	 	 	 	 	 	 	 	 	 	 	 	 	 	I107	I108	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P26	 	 	 	 	 	 	 	 	 	 	 	 	 	P26	P26	I109	I110	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P29	 	 	 	 	 	 	 	 	 	 	 	 	 	P29	P29	P29	P29	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I78	 	 	 	 	I79	 	 	 	 	 	 	 	 	 	 	 	 	 	I80	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	111	76	77	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P31	 	 	 	 	 	 	 	 	 	 	 	 	 	P31	P31	P31	P31	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P32	 	 	 	 	 	 	 	 	 	 	 	 	 	P32	P32	P32	P32	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I112	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I113	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I114	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P1	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P2	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P3	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I32	 	 	 	 	 	 	 	I35	I36	 	 	 	 	I33	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I34	I36	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	115\r\n"
+			+ " 	I44	 	 	 	 	I45	 	 	 	 	 	 	I39	I40	I41	 	 	 	 	I46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	116	38	42	43	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I117	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I52	 	 	 	I53	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	118	 	 	 	 	49	 	 	 	 	 	 	50	 	 	 	51	57	 \r\n"
+			+ "I62	 	 	 	I63	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	119	 	 	 	 	59	 	 	 	 	 	 	60	 	 	 	61	57	 \r\n"
+			+ "P47	 	 	 	 	P47	P47	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P47	 	 	 	 	 	P47	P47	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P1	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P2	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P3	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I32	 	 	 	 	 	 	 	I35	I36	 	 	 	 	I33	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I34	I36	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	120\r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P48	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I122	I123	I124	I125	I126	I127	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	121	 	 	 	 	 	 	 \r\n"
+			+ "P12	 	 	 	 	P12	P12	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P12	 	 	 	 	 	P12	P12	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I11	 	 	 	 	I12	I13	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I14	 	 	 	 	 	I15	I17	 	 	 	 	 	128	 	 	 	8	 	 	 	 	 	 	9	 	 	 	10	16	 \r\n"
+			+ " 	 	 	P24	 	 	 	 	 	 	 	 	 	 	 	 	P24	P24	I73	I74	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P25	 	 	 	 	 	 	 	 	 	 	 	 	P25	P25	I73	I74	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I129	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P27	 	 	 	 	 	 	 	 	 	 	 	 	P27	P27	P27	P27	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P28	 	 	 	 	 	 	 	 	 	 	 	 	P28	P28	P28	P28	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P30	 	 	 	 	 	 	 	 	 	 	 	 	P30	P30	P30	P30	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I78	 	 	 	 	I79	 	 	 	 	 	 	 	 	 	 	 	 	 	I80	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	130	77	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I78	 	 	 	 	I79	 	 	 	 	 	 	 	 	 	 	 	 	 	I80	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	131	77	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I78	 	 	 	 	I79	 	 	 	 	 	 	 	 	 	 	 	 	 	I80	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	132	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I78	 	 	 	 	I79	 	 	 	 	 	 	 	 	 	 	 	 	 	I80	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	133	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I134	 	 	 	 	 	 	 	 	 	 	 	 	 	I107	I108	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I136	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	135	 	 	 	 	 \r\n"
+			+ "P46	 	 	 	 	P46	P46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P46	 	 	 	 	 	P46	P46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	I65	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	137	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I138	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I139	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I140	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I83	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	141	 \r\n"
+			+ " 	 	 	I142	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I143	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I144	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P34	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P35	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P36	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P37	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P38	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	P39	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P9	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P21	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P24	 	 	 	 	 	 	 	 	 	 	 	 	 	P24	P24	I109	I110	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P25	 	 	 	 	 	 	 	 	 	 	 	 	 	P25	P25	I109	I110	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P27	 	 	 	 	 	 	 	 	 	 	 	 	 	P27	P27	P27	P27	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P28	 	 	 	 	 	 	 	 	 	 	 	 	 	P28	P28	P28	P28	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	P30	 	 	 	 	 	 	 	 	 	 	 	 	 	P30	P30	P30	P30	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	I145	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I148	 	 	 	 	 	 	 	 	 	 	 	 	 	I147	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	146	 	 	 \r\n"
+			+ " 	 	I149	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I150	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "P19	 	 	 	P19	 	P19	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P19	 	 	 	 	 	P19	P19	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I151	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I152	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "P47	 	 	 	P47	 	P47	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P47	 	 	 	 	 	P47	P47	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I153	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	I154	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "P40	 	 	 	 	P40	P40	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P40	 	 	 	 	 	P40	P40	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I155	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P44	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P45	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P48	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I52	 	 	 	I53	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	156	 	 	 	 	49	 	 	 	 	 	 	50	 	 	 	51	57	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I136	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	157	 	 	 	 	 \r\n"
+			+ "P46	 	 	 	P46	 	P46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P46	 	 	 	 	 	P46	P46	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I62	 	 	 	I63	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	158	 	 	 	 	59	 	 	 	 	 	 	60	 	 	 	61	57	 \r\n"
+			+ " 	 	P33	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I163	 	 	 	I164	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	159	 	 	 	 	160	 	 	 	 	 	 	161	 	 	 	162	57	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P4	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	I165	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	P4	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I166	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I163	 	 	 	I164	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	167	 	 	 	 	160	 	 	 	 	 	 	161	 	 	 	162	57	 \r\n"
+			+ "I163	 	 	 	I164	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	168	 	 	 	 	160	 	 	 	 	 	 	161	 	 	 	162	57	 \r\n"
+			+ "I163	 	 	 	I164	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	169	 	 	 	 	160	 	 	 	 	 	 	161	 	 	 	162	57	 \r\n"
+			+ " 	I170	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P5	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "P40	 	 	 	P40	 	P40	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P40	 	 	 	 	 	P40	P40	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I171	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P1	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P2	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P3	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I32	 	 	 	 	 	 	 	I35	I36	 	 	 	 	I33	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I34	I36	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	172\r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I174	 	 	I175	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	173	 	 	 	 \r\n"
+			+ " 	 	I176	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	P41	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	I148	 	 	 	 	 	 	 	 	 	 	 	 	 	I147	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	177	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I178	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I179	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I180	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ "I163	 	 	 	I164	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	181	 	 	 	 	160	 	 	 	 	 	 	161	 	 	 	162	57	 \r\n"
+			+ "I163	 	 	 	I164	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	182	 	 	 	 	160	 	 	 	 	 	 	161	 	 	 	162	57	 \r\n"
+			+ "I163	 	 	 	I164	 	I54	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I55	 	 	 	 	 	I56	I17	 	 	 	 	183	 	 	 	 	160	 	 	 	 	 	 	161	 	 	 	162	57	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I184	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	P4	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I185	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I186	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	I187	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	P43	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 \r\n"
+			+ " 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	I174	 	 	I175	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	188	 	 	 	 \r\n"
+			+ " 	 	 	 	P42	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 ";
+	String var = "[A-z]+[0-9]*[A-z]*";
+
+	public Variables() {
+		// TODO Auto-generated constructor stub
+		produccion_eliminar.put("P0", "Declaracion");
+		produccion_eliminar.put("P1", "Asigna");
+		produccion_eliminar.put("P2", "Selec");
+		produccion_eliminar.put("P3", "Repe");
+		produccion_eliminar.put("P4", "print");
+		produccion_eliminar.put("P5", "}");
+		produccion_eliminar.put("P6", "Asigna");
+		produccion_eliminar.put("P7", "Selec");
+		produccion_eliminar.put("P8", "Repe");
+		produccion_eliminar.put("P9", "print");
+		produccion_eliminar.put("P10", "Fin");
+		produccion_eliminar.put("P11", "Tipo");
+		produccion_eliminar.put("P12", ",");
+		produccion_eliminar.put("P13", ";");
+		produccion_eliminar.put("P14", ";");
+		produccion_eliminar.put("P15", "String");
+		produccion_eliminar.put("P16", "char");
+		produccion_eliminar.put("P17", "int");
+		produccion_eliminar.put("P18", "float");
+		produccion_eliminar.put("P19", "id");
+		produccion_eliminar.put("P20", "Oper");
+		produccion_eliminar.put("P21", "input");
+		produccion_eliminar.put("P22", "palabra");
+		produccion_eliminar.put("P23", "caracter");
+		produccion_eliminar.put("P24", "Oper");
+		produccion_eliminar.put("P25", "Oper");
+		produccion_eliminar.put("P26", "T");
+		produccion_eliminar.put("P27", "T");
+		produccion_eliminar.put("P28", "T");
+		produccion_eliminar.put("P29", "F");
+		produccion_eliminar.put("P30", "(");
+		produccion_eliminar.put("P31", "id");
+		produccion_eliminar.put("P32", "num");
+		produccion_eliminar.put("P33", "(");
+		produccion_eliminar.put("P34", "==");
+		produccion_eliminar.put("P35", "<");
+		produccion_eliminar.put("P36", "<=");
+		produccion_eliminar.put("P37", ">");
+		produccion_eliminar.put("P38", ">=");
+		produccion_eliminar.put("P39", "!=");
+		produccion_eliminar.put("P40", "switch");
+		produccion_eliminar.put("P41", "case");
+		produccion_eliminar.put("P42", "case");
+		produccion_eliminar.put("P43", "default");
+		produccion_eliminar.put("P44", "num");
+		produccion_eliminar.put("P45", "id");
+		produccion_eliminar.put("P46", "do");
+		produccion_eliminar.put("P47", "W");
+		produccion_eliminar.put("P48", "while");
+		produccion_eliminar.put("P49", "id");
+		produccion_eliminar.put("P50", "num");
+		produccion_eliminar.put("P51", "numf");
+		produccion_eliminar.put("P52", "palabra");
+		produccion_eliminar.put("P53", "caracter");
+
+		produccion.put("P0", "PR");
+		produccion.put("P1", "DC");
+		produccion.put("P2", "DC");
+		produccion.put("P3", "DC");
+		produccion.put("P4", "DC");
+		produccion.put("P5", "DC");
+		produccion.put("P6", "DCP");
+		produccion.put("P7", "DCP");
+		produccion.put("P8", "DCP");
+		produccion.put("P9", "DCP");
+		produccion.put("P10", "DCP");
+		produccion.put("P11", "Declaracion");
+		produccion.put("P12", "A");
+		produccion.put("P13", "A");
+		produccion.put("P14", "A");
+		produccion.put("P15", "Tipo");
+		produccion.put("P16", "Tipo");
+		produccion.put("P17", "Tipo");
+		produccion.put("P18", "Tipo");
+		produccion.put("P19", "Asigna");
+		produccion.put("P20", "E");
+		produccion.put("P21", "E");
+		produccion.put("P22", "E");
+		produccion.put("P23", "E");
+		produccion.put("P24", "Oper");
+		produccion.put("P25", "Oper");
+		produccion.put("P26", "Oper");
+		produccion.put("P27", "T");
+		produccion.put("P28", "T");
+		produccion.put("P29", "T");
+		produccion.put("P30", "F");
+		produccion.put("P31", "F");
+		produccion.put("P32", "F");
+		produccion.put("P33", "cmp");
+		produccion.put("P34", "C");
+		produccion.put("P35", "C");
+		produccion.put("P36", "C");
+		produccion.put("P37", "C");
+		produccion.put("P38", "C");
+		produccion.put("P39", "C");
+		produccion.put("P40", "Selec");
+		produccion.put("P41", "S");
+		produccion.put("P42", "D");
+		produccion.put("P43", "D");
+		produccion.put("P44", "N");
+		produccion.put("P45", "N");
+		produccion.put("P46", "Repe");
+		produccion.put("P47", "Repe");
+		produccion.put("P48", "W");
+		produccion.put("P49", "V");
+		produccion.put("P50", "V");
+		produccion.put("P51", "V");
+		produccion.put("P52", "V");
+		produccion.put("P53", "V");
+
+	}
+
+	public String[][] inicializar_tabla() {
+		String[][] aux = new String[189][58];
+		String[] aux2 = TABLA.split("\\r\\n");
+		for (int i = 0; i < aux.length; i++) {
+			String[] aux3 = aux2[i].split((char) 9 + "", 189);
+//			System.out.println("tam = " + aux2[i].split((char) 9 + "", 189).length);
+			for (int j = 0; j < aux[i].length; j++) {
+				try {
+					aux[i][j] = "I" + Integer.parseInt(aux3[j]);
+				} catch (NumberFormatException e) {
+					aux[i][j] = aux3[j];
+				}
+
+			}
+		}
+		return aux;
+	}
+
+	public String[] inicializar_encabezado() {
+		String[] aux = new String[58];
+		String[] aux2 = ENCABEZADO.split("	", 58);
+		for (int i = 0; i < aux.length; i++) {
+			aux[i] = aux2[i];
+		}
+		return aux;
+	}
+
+	public boolean Buscar(String[] vec, String var) {
+		for (int i = 0; i < vec.length; i++) {
+			if (vec[i].equalsIgnoreCase(var)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean NumeroOId(String var) {
+		try {
+			double aux = Double.parseDouble(var);
+			return true;
+		} catch (NumberFormatException e) {
+			if (Variable(var)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	public int BuscarPos(String[] vec, String var) {
+		for (int i = 0; i < vec.length; i++) {
+			if (vec[i].equalsIgnoreCase(var)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public Stack<String> Voltear(Stack<String> vec) {
+		Stack<String> aux = new Stack<String>();
+
+		try {
+			while (true) {
+				aux.push(vec.pop());
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return aux;
+	}
+
+//	public boolean AnalizarPatternInt(Pattern pat, String cad) {
+//
+//		return false;
+//	}
+//
+//	public boolean AnalizarPattern(Pattern pat, String cad) {
+//
+//	}
+
+	public boolean Variable(String lex) {
+		if (lex.matches(var)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+}
